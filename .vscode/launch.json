@@ -1,0 +1,40 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach debugger",
+      "request": "attach",
+      "type": "reactnativedirect",
+      "cwd": "${workspaceFolder}",
+      "sourceMaps": true,
+      "port": 19123
+    },
+    {
+      "name": "Launch iOS",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run ios",
+      "serverReadyAction": {
+        "pattern": "Logs for your project will appear below.",
+        "action": "startDebugging",
+        "name": "Attach debugger",
+        "killOnServerStop": true
+      }
+    },
+    {
+      "name": "Launch Android",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run android",
+      "serverReadyAction": {
+        "pattern": "Logs for your project will appear below.",
+        "action": "startDebugging",
+        "name": "Attach debugger",
+        "killOnServerStop": true
+      }
+    }
+  ]
+}
