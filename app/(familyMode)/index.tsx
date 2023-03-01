@@ -37,14 +37,14 @@ export default function TabOneScreen() {
   const router = useRouter();
   const { isLoading, data, error, fetchData } = useSleepSession("user2");
 
-  const presentData = (user: SupportedUser) => {
+  const presentData = (user: SleepListPerson) => {
     router.push({
       pathname: "(familyMode)/",
       params: {
-        user: "user1",
+        user: user.user,
+        name: user.displayName,
       },
     });
-    // router.push({"(familyMode)/");
   };
 
   return (
@@ -66,7 +66,7 @@ export default function TabOneScreen() {
           data={MOCKED_DATA}
           renderItem={({ item }) =>
             SleepListItem(item, () => {
-              presentData(item.user);
+              presentData(item);
             })
           }
         />
