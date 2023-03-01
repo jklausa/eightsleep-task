@@ -1,3 +1,4 @@
+import { Overpass_700Bold } from "@expo-google-fonts/overpass";
 import { Link, Stack, useRouter } from "expo-router";
 import {
   ActivityIndicator,
@@ -38,10 +39,13 @@ export default function TabOneScreen(props: ViewProps) {
       />
       <FlatList
         style={styles.list}
+        data={data}
+        ListHeaderComponent={
+          <Text style={styles.listHeader}>Select a family member:</Text>
+        }
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={fetchData} />
         }
-        data={data}
         renderItem={({ item }) =>
           SleepListItem(item, () => {
             presentData(item);
@@ -79,30 +83,35 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  listHeader: {
+    margin: 6,
+    padding: 6,
+    fontSize: 20,
+  },
   listItemContainer: {
     borderWidth: 1,
     borderColor: "red",
     borderRadius: 10,
 
     minHeight: 44,
-    padding: 5,
-    margin: 5,
+    padding: 6,
+    margin: 6,
     flexDirection: "row",
     alignItems: "center",
   },
   image: {
     width: 60,
     height: 60,
-    margin: 5,
+    margin: 6,
     marginEnd: 16,
   },
   personName: {
     fontSize: 18,
-    fontWeight: "900",
+    fontFamily: "Overpass_700Bold",
   },
   personRelationship: {
     fontSize: 14,
-    fontWeight: "300",
     marginTop: 4,
+    fontFamily: "Overpass_300Light",
   },
 });
