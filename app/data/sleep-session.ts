@@ -31,15 +31,26 @@ export interface TimeSeries {
 
 export type TimeSeriesValue = [Date, number];
 
-export type SupportedUsers = "user1" | "user2" | "user3";
+// This code is both amazing and terrifying. The flexibility of the typesystem here is amazing, but having to jump trough
+// that many hoops to get simple "hey does this value belong in this type" is not ideal.
+// I will readily admit that this code was inspired by https://stackoverflow.com/a/50085718 and with help of my friend.
 
-export function useSleepSession(user: SupportedUsers) {
+export const SupportedUsers = ["user1", "user2", "user3"] as const;
+export type SupportedUser = typeof SupportedUsers[number];
+
+export function isSupportedUser(value: string): value is SupportedUser {
+  return SupportedUsers.includes(value as SupportedUser);
+}
+
+
+export function useSleepSession(user: SupportedUser) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
   const [data, setData] = useState<SleepData>();
 
   const fetchData = async () => {
     setIsLoading(true);
+
     try {
       let fetchedData = await fetch(urlForUser(user));
       setData(await fetchedData.json());
@@ -57,7 +68,8 @@ export function useSleepSession(user: SupportedUsers) {
   return { isLoading, data, error, fetchData };
 }
 
-function urlForUser(user: SupportedUsers) {
+
+function urlForUser(user: SupportedUser) {
   switch (user) {
     case "user1":
       return "https://s3.amazonaws.com/eight-public/challenge/2228b530e055401f81ba37b51ff6f81d.json";
