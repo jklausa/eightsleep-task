@@ -7,7 +7,6 @@ import {
   StyleSheet,
 } from "react-native";
 
-import EditScreenInfo from "../../components/EditScreenInfo";
 import { Text, View } from "../../components/Themed";
 import { SupportedUser, useSleepSession } from "../data/sleep-session";
 
@@ -73,7 +72,6 @@ export default function TabOneScreen() {
         />
         <Text> asdfas whatever man whaaaa t is this</Text>
         <Button onPress={() => fetchData()} title="refetch data" />
-        <EditScreenInfo path="app/(tabs)/index.tsx" />
       </View>
     </>
   );
