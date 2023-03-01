@@ -1,6 +1,7 @@
 // Generated with help of https://app.quicktype.io, and cleaned up by hand.
 
 import { useEffect, useState } from "react";
+import { FamilyUser } from "./family-users";
 
 export interface SleepData {
   intervals: Interval[];
@@ -31,19 +32,7 @@ export interface TimeSeries {
 
 export type TimeSeriesValue = [Date, number];
 
-// This code is both amazing and terrifying. The flexibility of the typesystem here is amazing, but having to jump trough
-// that many hoops to get simple "hey does this value belong in this type" is not ideal.
-// I will readily admit that this code was inspired by https://stackoverflow.com/a/50085718 and with help of my friend.
-
-export const SupportedUsers = ["user1", "user2", "user3"] as const;
-export type SupportedUser = typeof SupportedUsers[number];
-
-export function isSupportedUser(value: string): value is SupportedUser {
-  return SupportedUsers.includes(value as SupportedUser);
-}
-
-
-export function useSleepSession(user: SupportedUser) {
+export function useSleepSession(user: FamilyUser) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
   const [data, setData] = useState<SleepData>();
@@ -52,7 +41,9 @@ export function useSleepSession(user: SupportedUser) {
     setIsLoading(true);
 
     try {
-      let fetchedData = await fetch(urlForUser(user));
+      let fetchedData = await fetch(
+        "https://s3.amazonaws.com/eight-public/challenge/" + user.sleepDataURL
+      );
       setData(await fetchedData.json());
     } catch (e) {
       setError(e);
@@ -66,16 +57,4 @@ export function useSleepSession(user: SupportedUser) {
   }, []);
 
   return { isLoading, data, error, fetchData };
-}
-
-
-function urlForUser(user: SupportedUser) {
-  switch (user) {
-    case "user1":
-      return "https://s3.amazonaws.com/eight-public/challenge/2228b530e055401f81ba37b51ff6f81d.json";
-    case "user2":
-      return "https://s3.amazonaws.com/eight-public/challenge/d6c1355e38194139b8d0c870baf86365.json";
-    case "user3":
-      return "https://s3.amazonaws.com/eight-public/challenge/f9bf229fd19e4c799e8c19a962d73449.json";
-  }
 }

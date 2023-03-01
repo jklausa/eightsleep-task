@@ -8,44 +8,21 @@ import {
 } from "react-native";
 
 import { Text, View } from "../../components/Themed";
-import { SupportedUser, useSleepSession } from "../data/sleep-session";
-
-interface SleepListPerson {
-  user: SupportedUser;
-  displayName: string;
-  relationship?: string;
-}
+import { FamilyUser, useFamilyUsers } from "../data/family-users";
 
 export default function TabOneScreen() {
-  const MOCKED_DATA: SleepListPerson[] = [
-    {
-      user: "user1",
-      displayName: "Steve",
-    },
-    {
-      user: "user2",
-      displayName: "Eve",
-      relationship: "Daughter",
-    },
-    {
-      user: "user3",
-      displayName: "Harold",
-      relationship: "Husband",
-    },
-  ];
-
   const router = useRouter();
-  const { isLoading, data, error, fetchData } = useSleepSession("user2");
+  const { isLoading, data, error, fetchData } = useFamilyUsers();
 
-  const presentData = (user: SleepListPerson) => {
+  function presentData(user: FamilyUser): void {
     router.push({
       pathname: "(familyMode)/",
       params: {
-        user: user.user,
+        sleepDataURL: user.sleepDataURL,
         name: user.displayName,
       },
     });
-  };
+  }
 
   return (
     <>
@@ -63,7 +40,7 @@ export default function TabOneScreen() {
         />
         <FlatList
           style={{ width: "100%" }}
-          data={MOCKED_DATA}
+          data={data}
           renderItem={({ item }) =>
             SleepListItem(item, () => {
               presentData(item);
@@ -77,7 +54,7 @@ export default function TabOneScreen() {
   );
 }
 
-export function SleepListItem(person: SleepListPerson, onTouch: () => void) {
+export function SleepListItem(person: FamilyUser, onTouch: () => void) {
   return (
     <View style={styles.listItemContainer}>
       <Pressable onPress={onTouch}>
