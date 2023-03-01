@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     marginEnd: 16,
   },
   personName: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: "Overpass_700Bold",
   },
   personRelationship: {
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 4,
     fontFamily: "Overpass_300Light",
   },
