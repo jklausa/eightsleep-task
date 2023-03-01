@@ -1,16 +1,21 @@
 import { Link, Stack, useRouter } from "expo-router";
 import {
   ActivityIndicator,
+  Image,
   Button,
   FlatList,
   Pressable,
   StyleSheet,
+  TouchableHighlight,
+  TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 
-import { Text, View } from "../../components/Themed";
+import { Text, useThemeColor, View, ViewProps } from "../../components/Themed";
+import Colors from "../../constants/Colors";
 import { FamilyUser, useFamilyUsers } from "../data/family-users";
 
-export default function TabOneScreen() {
+export default function TabOneScreen(props: ViewProps) {
   const router = useRouter();
   const { isLoading, data, error, fetchData } = useFamilyUsers();
 
@@ -25,63 +30,79 @@ export default function TabOneScreen() {
   }
 
   return (
-    <>
+    <View>
       <Stack.Screen
         options={{
           title: "Sleep - Family Mode",
         }}
       />
-      <View style={styles.container}>
-        <Text style={styles.title}>fuuuu ck One</Text>
-        <View
-          style={styles.separator}
-          lightColor="#eee"
-          darkColor="rgba(255,255,255,0.1)"
-        />
-        <FlatList
-          style={{ width: "100%" }}
-          data={data}
-          renderItem={({ item }) =>
-            SleepListItem(item, () => {
-              presentData(item);
-            })
-          }
-        />
-        <Text> asdfas whatever man whaaaa t is this</Text>
-        <Button onPress={() => fetchData()} title="refetch data" />
-      </View>
-    </>
-  );
-}
-
-export function SleepListItem(person: FamilyUser, onTouch: () => void) {
-  return (
-    <View style={styles.listItemContainer}>
-      <Pressable onPress={onTouch}>
-        <Text style={styles.title}>{person.displayName}</Text>
-      </Pressable>
+      <FlatList
+        style={styles.list}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={fetchData} />
+        }
+        data={data}
+        renderItem={({ item }) =>
+          SleepListItem(item, () => {
+            presentData(item);
+          })
+        }
+      />
     </View>
   );
 }
 
+export function SleepListItem(person: FamilyUser, onTouch: () => void) {
+  // Adding more data to the seed makes the generated images slightly nicer.
+  let avatarSeed = `${person.displayName}${person.relationship}${person.sleepDataURL}`;
+
+  let fakeAvatarURI = `https://api.dicebear.com/5.x/initials/png?seed=${avatarSeed}&backgroundColor=ffdfbf,ffb300,fb8c00,fdd835,e53935,d81b60,d1d4f9,c0ca33,f4511e,ffd5dc,00897b,00acc1,1e88e5&backgroundType=gradientLinear&backgroundRotation=360,-360&radius=50`;
+
+  console.log(fakeAvatarURI);
+  return (
+    <TouchableOpacity onPress={onTouch}>
+      <View style={styles.listItemContainer}>
+        <Image source={{ uri: fakeAvatarURI }} style={styles.image} />
+        <View>
+          <Text style={styles.personName}>{person.displayName}</Text>
+          {!!person.relationship && (
+            <Text style={styles.personRelationship}>{person.relationship}</Text>
+          )}
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  list: {
+    width: "100%",
+    height: "100%",
   },
   listItemContainer: {
-    backgroundColor: "purple",
-    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "red",
+    borderRadius: 10,
+
     minHeight: 44,
+    padding: 5,
+    margin: 5,
+    flexDirection: "row",
+    alignItems: "center",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+  image: {
+    width: 60,
+    height: 60,
+    margin: 5,
+    marginEnd: 16,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+  personName: {
+    fontSize: 18,
+    fontWeight: "900",
+  },
+  personRelationship: {
+    fontSize: 14,
+    fontWeight: "300",
+    marginTop: 4,
   },
 });
