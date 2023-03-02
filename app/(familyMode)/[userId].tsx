@@ -1,5 +1,4 @@
-import { Overpass_700Bold } from "@expo-google-fonts/overpass";
-import { Stack, usePathname, useSearchParams } from "expo-router";
+import { Stack, useSearchParams } from "expo-router";
 
 import { StyleSheet } from "react-native";
 
@@ -8,6 +7,14 @@ import { useSleepSession } from "../data/sleep-session";
 
 export default function Details() {
   const { name, sleepDataURL } = useSearchParams();
+
+  // I know the error handling here is probably an overkill and unidiomatic, but
+  // because of how the expo-router works (and because we don't have a global-state-of-truth like Redux, which seems
+  // like an overkill for this assignment?), I'm sorta... uneasy? about passing the data?
+  // Because these could be missing, or mistyped, or anything, so I wanted to handle the errors explicitly here.
+  //
+  // AIUI, the "blessed" way of doing it would be to have a global store of some sort with a list of all users,
+  // and passing an unique identifier, and then fetching an item via that identifier locally within the component.
 
   if (typeof sleepDataURL !== "string") {
     return (

@@ -1,19 +1,13 @@
-import { Overpass_700Bold } from "@expo-google-fonts/overpass";
-import { Link, Stack, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import {
-  ActivityIndicator,
   Image,
-  Button,
   FlatList,
-  Pressable,
   StyleSheet,
-  TouchableHighlight,
   TouchableOpacity,
   RefreshControl,
 } from "react-native";
 
-import { Text, useThemeColor, View, ViewProps } from "../../components/Themed";
-import Colors from "../../constants/Colors";
+import { Text, View, ViewProps } from "../../components/Themed";
 import { FamilyUser, useFamilyUsers } from "../data/family-users";
 
 export default function TabOneScreen(props: ViewProps) {
