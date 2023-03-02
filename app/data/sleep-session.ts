@@ -32,7 +32,7 @@ export interface TimeSeries {
 
 export type TimeSeriesValue = [Date, number];
 
-export function useSleepSession(user: FamilyUser) {
+export function useSleepSession(url: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
   const [data, setData] = useState<SleepData>();
@@ -42,7 +42,7 @@ export function useSleepSession(user: FamilyUser) {
 
     try {
       let fetchedData = await fetch(
-        "https://s3.amazonaws.com/eight-public/challenge/" + user.sleepDataURL
+        "https://s3.amazonaws.com/eight-public/challenge/" + url
       );
       setData(await fetchedData.json());
     } catch (e) {

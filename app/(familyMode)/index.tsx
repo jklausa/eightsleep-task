@@ -62,7 +62,6 @@ export function SleepListItem(person: FamilyUser, onTouch: () => void) {
 
   let fakeAvatarURI = `https://api.dicebear.com/5.x/initials/png?seed=${avatarSeed}&backgroundColor=ffdfbf,ffb300,fb8c00,fdd835,e53935,d81b60,d1d4f9,c0ca33,f4511e,ffd5dc,00897b,00acc1,1e88e5&backgroundType=gradientLinear&backgroundRotation=360,-360&radius=50`;
 
-  console.log(fakeAvatarURI);
   return (
     <TouchableOpacity onPress={onTouch}>
       <View style={styles.listItemContainer}>
