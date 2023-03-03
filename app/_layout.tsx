@@ -34,9 +34,10 @@ export {
   ErrorBoundary,
 } from 'expo-router';
 
-export const UNSTABLE_SETTINGS = {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(familyMode)',
+  initialRouteName: 'index',
 };
 
 export default function RootLayout() {
@@ -83,10 +84,7 @@ function RootLayoutNav() {
   return (
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(familyMode)/index" />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        </Stack>
+        <Stack />
       </ThemeProvider>
     </>
   );

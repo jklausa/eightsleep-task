@@ -1,13 +1,21 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Stack, useSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
+import { type FC } from 'react';
 import { ActivityIndicator, StyleSheet, useColorScheme } from 'react-native';
 
 import { Text, View, useThemeColor } from '../../components/Themed';
 import Colors from '../../constants/Colors';
 import { useSleepSession } from '../data/sleep-session';
 
-export default function Details() {
-  const { name, sleepDataURL } = useSearchParams();
+interface UserShowParamList extends Record<string, string> {
+  displayName: string;
+}
+
+export default function UserShow() {
+  const { displayName } = useLocalSearchParams<UserShowParamList>();
+
+  const name = displayName;
+  const sleepDataURL = '2228b530e055401f81ba37b51ff6f81d.json';
 
   // I know the error handling here is probably an overkill and unidiomatic, but
   // because of how the expo-router works (and because we don't have a global-state-of-truth like Redux, which seems
@@ -29,16 +37,13 @@ export default function Details() {
     );
   }
 
-  return <DetailsScreen sleepDataURL={sleepDataURL} name={name} />;
+  return <UserShowScreen sleepDataURL={sleepDataURL} name={name} />;
 }
 
-function DetailsScreen({
-  sleepDataURL,
-  name,
-}: {
+const UserShowScreen: FC<{
   sleepDataURL: string;
   name: string;
-}) {
+}> = ({ sleepDataURL, name }) => {
   const { isLoading, data, error, fetchData } = useSleepSession(sleepDataURL);
 
   return (
@@ -65,7 +70,7 @@ function DetailsScreen({
       )}
     </>
   );
-}
+};
 
 function NetworkLoadingError({ onTapReload }: { onTapReload: () => void }) {
   const tintColor = useThemeColor({}, 'tint');

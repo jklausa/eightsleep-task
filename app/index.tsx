@@ -1,30 +1,34 @@
-import { Stack, useRouter } from 'expo-router';
+import { Link, Stack } from 'expo-router';
+import { type FC, useCallback } from 'react';
 import {
   FlatList,
   Image,
+  type ListRenderItem,
   RefreshControl,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 
-import { Text, View, type ViewProps } from '../../components/Themed';
-import { type FamilyUser, useFamilyUsers } from '../data/family-users';
+import { Text, View } from '../components/Themed';
 
-export default function TabOneScreen(props: ViewProps) {
-  const router = useRouter();
+import { type FamilyUser, useFamilyUsers } from './data/family-users';
+
+const hrefForUser = (user: FamilyUser) => ({
+  pathname: '/user/[displayName]',
+  params: {
+    displayName: user.displayName,
+  },
+});
+
+export default function IndexScreen() {
   const { isLoading, data, fetchData } = useFamilyUsers();
 
   // TODO: show errors
 
-  function presentData(user: FamilyUser): void {
-    router.push({
-      pathname: '(familyMode)/',
-      params: {
-        sleepDataURL: user.sleepDataURL,
-        name: user.displayName,
-      },
-    });
-  }
+  const renderItem = useCallback<ListRenderItem<FamilyUser>>(
+    ({ item: user }) => <SleepListItem user={user} />,
+    []
+  );
 
   return (
     <View>
@@ -42,38 +46,38 @@ export default function TabOneScreen(props: ViewProps) {
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={fetchData} />
         }
-        renderItem={({ item }) =>
-          SleepListItem(item, () => {
-            presentData(item);
-          })
-        }
+        renderItem={renderItem}
       />
     </View>
   );
 }
 
-export function SleepListItem(person: FamilyUser, onTouch: () => void) {
+const SleepListItem: FC<{
+  user: FamilyUser;
+}> = ({ user }) => {
   // Adding more data to the seed makes the generated images slightly nicer.
-  const avatarSeed = `${person.displayName}${
-    person.relationship ?? ''
-  }${person.sleepDataURL.toString()}`;
+  const avatarSeed = `${user.displayName}${
+    user.relationship ?? ''
+  }${user.sleepDataURL.toString()}`;
 
   const fakeAvatarURI = `https://api.dicebear.com/5.x/initials/png?seed=${avatarSeed}&backgroundColor=ffdfbf,ffb300,fb8c00,fdd835,e53935,d81b60,d1d4f9,c0ca33,f4511e,ffd5dc,00897b,00acc1,1e88e5&backgroundType=gradientLinear&backgroundRotation=360,-360&radius=50`;
 
   return (
-    <TouchableOpacity onPress={onTouch}>
-      <View style={styles.listItemContainer}>
-        <Image source={{ uri: fakeAvatarURI }} style={styles.image} />
-        <View>
-          <Text style={styles.personName}>{person.displayName}</Text>
-          {person.relationship != null && (
-            <Text style={styles.personRelationship}>{person.relationship}</Text>
-          )}
+    <Link href={hrefForUser(user)} asChild>
+      <TouchableOpacity>
+        <View style={styles.listItemContainer}>
+          <Image source={{ uri: fakeAvatarURI }} style={styles.image} />
+          <View>
+            <Text style={styles.personName}>{user.displayName}</Text>
+            {user.relationship != null && (
+              <Text style={styles.personRelationship}>{user.relationship}</Text>
+            )}
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Link>
   );
-}
+};
 
 const styles = StyleSheet.create({
   list: {
