@@ -1,19 +1,10 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { Stack, useSearchParams } from "expo-router";
+import { AntDesign } from '@expo/vector-icons';
+import { Stack, useSearchParams } from 'expo-router';
+import { ActivityIndicator, StyleSheet, useColorScheme } from 'react-native';
 
-import {
-  ActivityIndicator,
-  Button,
-  StyleSheet,
-  TouchableHighlight,
-  useColorScheme,
-} from "react-native";
-
-import { AntDesign } from "@expo/vector-icons";
-
-import { Text, useThemeColor, View } from "../../components/Themed";
-import { useSleepSession } from "../data/sleep-session";
-import Colors from "../../constants/Colors";
+import { Text, View, useThemeColor } from '../../components/Themed';
+import Colors from '../../constants/Colors';
+import { useSleepSession } from '../data/sleep-session';
 
 export default function Details() {
   const { name, sleepDataURL } = useSearchParams();
@@ -26,13 +17,13 @@ export default function Details() {
   // AIUI, the "blessed" way of doing it would be to have a global store of some sort with a list of all users,
   // and passing an unique identifier, and then fetching an item via that identifier locally within the component.
 
-  if (typeof sleepDataURL !== "string") {
+  if (typeof sleepDataURL !== 'string') {
     return (
       <ErrorScreen errorMessage="Couldn't parse URL for the users sleep data." />
     );
   }
 
-  if (typeof name !== "string") {
+  if (typeof name !== 'string') {
     return (
       <ErrorScreen errorMessage="Couldn't parse the name for the users sleep data." />
     );
@@ -54,18 +45,18 @@ function DetailsScreen({
     <>
       <Stack.Screen
         options={{
-          title: `${name}`,
+          title: name,
         }}
       />
       {isLoading && (
         <View style={styles.spinnerContainer}>
-          <ActivityIndicator size={"large"} />
+          <ActivityIndicator size={'large'} />
         </View>
       )}
       {!isLoading && (
         <View style={styles.container}>
-          {!!error && <NetworkLoadingError onTapReload={() => fetchData()} />}
-          {!error && (
+          {error != null && <NetworkLoadingError onTapReload={fetchData} />}
+          {error == null && (
             <Text>
               userString: {name}, sleep sessions: {data?.intervals.length}
             </Text>
@@ -77,11 +68,11 @@ function DetailsScreen({
 }
 
 function NetworkLoadingError({ onTapReload }: { onTapReload: () => void }) {
-  const tintColor = useThemeColor({}, "tint");
-  const themeTextColor = useThemeColor({}, "text");
-  const scheme = useColorScheme() ?? "light";
+  const tintColor = useThemeColor({}, 'tint');
+  const themeTextColor = useThemeColor({}, 'text');
+  const scheme = useColorScheme() ?? 'light';
 
-  const textColor = scheme == "dark" ? Colors.dark.background : themeTextColor;
+  const textColor = scheme === 'dark' ? Colors.dark.background : themeTextColor;
 
   return (
     <View style={networErrorStyles.networkErrorContainer}>
@@ -94,7 +85,7 @@ function NetworkLoadingError({ onTapReload }: { onTapReload: () => void }) {
       <View style={networErrorStyles.button}>
         <AntDesign.Button
           name="reload1"
-          onPress={({}) => {
+          onPress={() => {
             onTapReload();
           }}
           color={textColor}
@@ -117,7 +108,7 @@ function ErrorScreen({ errorMessage }: { errorMessage?: string }) {
       <Text style={errorStyles.subHeader}>
         Please return to the previous screen.
       </Text>
-      {!!errorMessage && (
+      {errorMessage != null && (
         <>
           <Text style={errorStyles.subHeader}>Error description:</Text>
           <Text style={errorStyles.errorMessage}>{errorMessage}</Text>
@@ -135,16 +126,16 @@ const styles = StyleSheet.create({
   },
   spinnerContainer: {
     flex: 1,
-    alignContent: "center",
-    justifyContent: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 });
 
 const networErrorStyles = StyleSheet.create({
   networkErrorContainer: {
     flex: 1,
-    alignContent: "center",
-    justifyContent: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   text: {
     fontSize: 18,
@@ -152,7 +143,7 @@ const networErrorStyles = StyleSheet.create({
   },
   button: {
     margin: 16,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });
 
@@ -164,16 +155,16 @@ const errorStyles = StyleSheet.create({
   },
   header: {
     fontSize: 30,
-    fontFamily: "Overpass_700Bold",
+    fontFamily: 'Overpass_700Bold',
   },
   subHeader: {
     fontSize: 20,
-    fontFamily: "Overpass_400Regular",
+    fontFamily: 'Overpass_400Regular',
   },
   errorMessage: {
     padding: 4,
-    fontFamily: "SpaceMono",
+    fontFamily: 'SpaceMono',
     fontSize: 16,
-    backgroundColor: "#e5e5e5",
+    backgroundColor: '#e5e5e5',
   },
 });
