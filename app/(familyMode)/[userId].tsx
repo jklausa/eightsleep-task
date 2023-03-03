@@ -50,8 +50,6 @@ function DetailsScreen({
 }) {
   const { isLoading, data, error, fetchData } = useSleepSession(sleepDataURL);
 
-  const isFakeError = true;
-
   return (
     <>
       <Stack.Screen
@@ -66,10 +64,8 @@ function DetailsScreen({
       )}
       {!isLoading && (
         <View style={styles.container}>
-          {isFakeError && (
-            <NetworkLoadingError onTapReload={() => fetchData()} />
-          )}
-          {!isFakeError && <Text>userString: {name}</Text>}
+          {!!error && <NetworkLoadingError onTapReload={() => fetchData()} />}
+          {!error && <Text>userString: {name}</Text>}
         </View>
       )}
     </>
