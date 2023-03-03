@@ -1,5 +1,5 @@
 export interface FamilyUser {
-  sleepDataURL: URL;
+  sleepDataURL: string;
   displayName: string;
   relationship?: string;
 }

@@ -5,7 +5,7 @@ import { ActivityIndicator, StyleSheet, useColorScheme } from 'react-native';
 
 import { Text, View, useThemeColor } from '#components/Themed';
 import Colors from '#constants/Colors';
-import { useSleepSession } from '#hooks/data/useSleepSession';
+import { useSleepSessionForUser } from '#hooks/data/useSleepSessionForUser';
 
 interface UserShowParamList extends Record<string, string> {
   displayName: string;
@@ -13,9 +13,6 @@ interface UserShowParamList extends Record<string, string> {
 
 export default function UserShow() {
   const { displayName } = useLocalSearchParams<UserShowParamList>();
-
-  const name = displayName;
-  const sleepDataURL = '2228b530e055401f81ba37b51ff6f81d.json';
 
   // I know the error handling here is probably an overkill and unidiomatic, but
   // because of how the expo-router works (and because we don't have a global-state-of-truth like Redux, which seems
@@ -25,32 +22,26 @@ export default function UserShow() {
   // AIUI, the "blessed" way of doing it would be to have a global store of some sort with a list of all users,
   // and passing an unique identifier, and then fetching an item via that identifier locally within the component.
 
-  if (typeof sleepDataURL !== 'string') {
+  if (typeof displayName !== 'string') {
     return (
-      <ErrorScreen errorMessage="Couldn't parse URL for the users sleep data." />
+      <ErrorScreen errorMessage="Missing required parameter: displayName" />
     );
   }
 
-  if (typeof name !== 'string') {
-    return (
-      <ErrorScreen errorMessage="Couldn't parse the name for the users sleep data." />
-    );
-  }
-
-  return <UserShowScreen sleepDataURL={sleepDataURL} name={name} />;
+  return <UserShowScreen displayName={displayName} />;
 }
 
 const UserShowScreen: FC<{
-  sleepDataURL: string;
-  name: string;
-}> = ({ sleepDataURL, name }) => {
-  const { isLoading, data, error, fetchData } = useSleepSession(sleepDataURL);
+  displayName: string;
+}> = ({ displayName }) => {
+  const { isLoading, user, sleepSession, error, refetch } =
+    useSleepSessionForUser(displayName);
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: name,
+          title: displayName,
         }}
       />
       {isLoading && (
@@ -58,12 +49,13 @@ const UserShowScreen: FC<{
           <ActivityIndicator size={'large'} />
         </View>
       )}
-      {!isLoading && (
+      {!isLoading && user != null && sleepSession != null && (
         <View style={styles.container}>
-          {error != null && <NetworkLoadingError onTapReload={fetchData} />}
+          {error != null && <NetworkLoadingError onTapReload={refetch} />}
           {error == null && (
             <Text>
-              userString: {name}, sleep sessions: {data?.intervals.length}
+              userString: {user.displayName}, sleep sessions:{' '}
+              {sleepSession.intervals.length}
             </Text>
           )}
         </View>

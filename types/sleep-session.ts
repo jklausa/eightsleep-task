@@ -1,8 +1,8 @@
-export interface SleepData {
+export interface SleepSession {
   intervals: Interval[];
 }
 
-export interface Interval {
+interface Interval {
   id: string;
   ts: Date;
   stages: SleepStage[];
@@ -10,14 +10,12 @@ export interface Interval {
   timeseries: TimeSeries;
 }
 
-export interface SleepStage {
-  stage: StageEnum;
+interface SleepStage {
+  stage: 'awake' | 'light' | 'deep' | 'out';
   duration: number; // in seconds
 }
 
-export type StageEnum = 'awake' | 'light' | 'deep' | 'out';
-
-export interface TimeSeries {
+interface TimeSeries {
   tnt: TimeSeriesValue[];
   tempRoomC: TimeSeriesValue[]; // Celsius
   tempBedC: TimeSeriesValue[]; // Celsius
@@ -25,4 +23,4 @@ export interface TimeSeries {
   heartRate: TimeSeriesValue[]; // BPM
 }
 
-export type TimeSeriesValue = [Date, number];
+type TimeSeriesValue = [Date, number];
