@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { Text, View } from '../components/Themed';
-
-import { type FamilyUser, useFamilyUsers } from './data/family-users';
+import { Text, View } from '#components/Themed';
+import { useFamilyUsers } from '#hooks/data/useFamilyUsers';
+import { type FamilyUser } from '#types/family-user';
 
 const hrefForUser = (user: FamilyUser) => ({
   pathname: '/user/[displayName]',
@@ -21,7 +21,7 @@ const hrefForUser = (user: FamilyUser) => ({
 });
 
 export default function IndexScreen() {
-  const { isLoading, data, fetchData } = useFamilyUsers();
+  const { isLoading, data, refetch } = useFamilyUsers();
 
   // TODO: show errors
 
@@ -44,7 +44,7 @@ export default function IndexScreen() {
           <Text style={styles.listHeader}>Select a family member:</Text>
         }
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={fetchData} />
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
         }
         renderItem={renderItem}
       />

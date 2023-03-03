@@ -3,9 +3,9 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { type FC } from 'react';
 import { ActivityIndicator, StyleSheet, useColorScheme } from 'react-native';
 
-import { Text, View, useThemeColor } from '../../components/Themed';
-import Colors from '../../constants/Colors';
-import { useSleepSession } from '../data/sleep-session';
+import { Text, View, useThemeColor } from '#components/Themed';
+import Colors from '#constants/Colors';
+import { useSleepSession } from '#hooks/data/useSleepSession';
 
 interface UserShowParamList extends Record<string, string> {
   displayName: string;

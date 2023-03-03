@@ -1,24 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export interface FamilyUser {
-  sleepDataURL: URL;
-  displayName: string;
-  relationship?: string;
-}
-
-export function useFamilyUsers() {
+export const useNetworkData = <T>(url: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error>();
-  const [data, setData] = useState<[FamilyUser]>();
+  const [data, setData] = useState<T>();
 
   const fetchData = useCallback(() => {
     const run = async () => {
       setIsLoading(true);
 
       try {
-        const fetchedData = await fetch(familyURL);
+        const fetchedData = await fetch(url);
         setData(await fetchedData.json());
+        setError(undefined);
       } catch (e) {
+        setData(undefined);
         if (e instanceof Error) {
           setError(e);
         } else {
@@ -32,14 +28,11 @@ export function useFamilyUsers() {
     run().catch((e) => {
       setError(e);
     });
-  }, []);
+  }, [url]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  return { isLoading, data, error, fetchData };
-}
-
-const familyURL =
-  'https://gist.githubusercontent.com/jklausa/1a8c06f2e9c48706846244319cd407d1/raw/6da8ce0c569bb28f5d9f126eee234275230a9f5d/family-data.json';
+  return { isLoading, data, error, refetch: fetchData };
+};
