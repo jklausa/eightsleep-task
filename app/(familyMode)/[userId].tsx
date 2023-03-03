@@ -65,7 +65,11 @@ function DetailsScreen({
       {!isLoading && (
         <View style={styles.container}>
           {!!error && <NetworkLoadingError onTapReload={() => fetchData()} />}
-          {!error && <Text>userString: {name}</Text>}
+          {!error && (
+            <Text>
+              userString: {name}, sleep dessions: {data?.intervals.length}
+            </Text>
+          )}
         </View>
       )}
     </>
