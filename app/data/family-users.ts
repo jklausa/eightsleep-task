@@ -31,4 +31,4 @@ export function useFamilyUsers() {
   return { isLoading, data, error, fetchData };
 }
 const familyURL =
-  "https://gist.githubusercontent.com/jklausa/1a8c06f2e9c48706846244319cd407d1/raw/2420c752ed40370c131161d2bf54057e2fa86619/family-data.json";
+  "https://gist.githubusercontent.com/jklausa/1a8c06f2e9c48706846244319cd407d1/raw/6da8ce0c569bb28f5d9f126eee234275230a9f5d/family-data.json";
