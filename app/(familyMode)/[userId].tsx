@@ -1,9 +1,19 @@
+import { FontAwesome } from "@expo/vector-icons";
 import { Stack, useSearchParams } from "expo-router";
 
-import { StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  TouchableHighlight,
+  useColorScheme,
+} from "react-native";
 
-import { Text, View } from "../../components/Themed";
+import { AntDesign } from "@expo/vector-icons";
+
+import { Text, useThemeColor, View } from "../../components/Themed";
 import { useSleepSession } from "../data/sleep-session";
+import Colors from "../../constants/Colors";
 
 export default function Details() {
   const { name, sleepDataURL } = useSearchParams();
@@ -40,15 +50,62 @@ function DetailsScreen({
 }) {
   const { isLoading, data, error, fetchData } = useSleepSession(sleepDataURL);
 
+  const isFakeError = true;
+
   return (
-    <View>
+    <>
       <Stack.Screen
         options={{
           title: `${name}`,
         }}
       />
-      {/* {isValidUser && <Text> This is a valid user</Text>} */}
-      <Text>userString: {name}</Text>
+      {isLoading && (
+        <View style={styles.spinnerContainer}>
+          <ActivityIndicator size={"large"} />
+        </View>
+      )}
+      {!isLoading && (
+        <View style={styles.container}>
+          {isFakeError && (
+            <NetworkLoadingError onTapReload={() => fetchData()} />
+          )}
+          {!isFakeError && <Text>userString: {name}</Text>}
+        </View>
+      )}
+    </>
+  );
+}
+
+function NetworkLoadingError({ onTapReload }: { onTapReload: () => void }) {
+  const tintColor = useThemeColor({}, "tint");
+  const themeTextColor = useThemeColor({}, "text");
+  const scheme = useColorScheme() ?? "light";
+
+  const textColor = scheme == "dark" ? Colors.dark.background : themeTextColor;
+
+  return (
+    <View style={networErrorStyles.networkErrorContainer}>
+      <Text style={networErrorStyles.text}>
+        Failed loading data from the network.
+      </Text>
+      <Text style={networErrorStyles.text}>
+        Check that your internet connection is working and retry.
+      </Text>
+      <View style={networErrorStyles.button}>
+        <AntDesign.Button
+          name="reload1"
+          onPress={({}) => {
+            onTapReload();
+          }}
+          color={textColor}
+          backgroundColor={tintColor}
+          style={{
+            margin: 4,
+          }}
+        >
+          Retry
+        </AntDesign.Button>
+      </View>
     </View>
   );
 }
@@ -69,6 +126,35 @@ function ErrorScreen({ errorMessage }: { errorMessage?: string }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    gap: 12,
+  },
+  spinnerContainer: {
+    flex: 1,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+});
+
+const networErrorStyles = StyleSheet.create({
+  networkErrorContainer: {
+    flex: 1,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  text: {
+    fontSize: 18,
+    margin: 6,
+  },
+  button: {
+    margin: 16,
+    alignSelf: "center",
+  },
+});
 
 const errorStyles = StyleSheet.create({
   container: {
