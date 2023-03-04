@@ -63,6 +63,7 @@ export const useIntervalSummary = (interval: Interval) => {
     },
     duration: {
       stages: stageDurations,
+      total: totalDuration,
       summary: `${hours.toString(10)} hours, ${minutes.toString(10)} minutes`,
     },
   };

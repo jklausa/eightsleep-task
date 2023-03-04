@@ -1,7 +1,5 @@
 import { type FC } from 'react';
 
-import { TimeSeriesChart } from '../chart/TimeSeriesChart';
-
 import { SleepStagesChart } from '#components/chart/SleepStagesChart';
 import { Text, View } from '#components/Themed';
 import { useIntervalSummary } from '#hooks/useIntervalSummary';
@@ -14,12 +12,6 @@ export const IntervalSummary: FC<{
   const { duration, range, stages } = useIntervalSummary(interval);
   const stageSummaries = useStageSummaries(duration.stages);
 
-  const timeSeriesProps = {
-    domain: {
-      x: [range.start, range.end] as [Date, Date],
-    },
-  };
-
   return (
     <View>
       <Text>
@@ -30,33 +22,14 @@ export const IntervalSummary: FC<{
         <Text>Sleep score: {interval.score}</Text>
         {stageSummaries.map((summary) => (
           <Text key={summary.key}>
-            {summary.title}: {summary.summary}
+            {summary.title}: {summary.summary} (
+            {Math.round((duration.stages[summary.key] / duration.total) * 100)}
+            %)
           </Text>
         ))}
       </View>
 
       <SleepStagesChart start={range.start} end={range.end} stages={stages} />
-
-      <TimeSeriesChart
-        name="Room Temperature (°C)"
-        values={interval.timeseries.tempRoomC}
-        {...timeSeriesProps}
-      />
-      <TimeSeriesChart
-        name="Bed Temperature (°C)"
-        values={interval.timeseries.tempBedC}
-        {...timeSeriesProps}
-      />
-      <TimeSeriesChart
-        name="Breathing Rate (beats/minute)"
-        values={interval.timeseries.respiratoryRate}
-        {...timeSeriesProps}
-      />
-      <TimeSeriesChart
-        name="Heart Rate (beats/minute)"
-        values={interval.timeseries.heartRate}
-        {...timeSeriesProps}
-      />
     </View>
   );
 };
