@@ -25,4 +25,4 @@ interface TimeSeries {
   heartRate: TimeSeriesValue[]; // BPM
 }
 
-type TimeSeriesValue = [StringDate, number];
+export type TimeSeriesValue = [StringDate, number];

@@ -17,6 +17,9 @@
     "@expo-google-fonts/overpass": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",
     "@react-navigation/native": "^6.0.2",
+    "d3-array": "^3.2.2",
+    "d3-scale": "^4.0.2",
+    "d3-time": "^3.1.0",
     "expo": "~48.0.4",
     "expo-font": "~11.1.1",
     "expo-linking": "~4.0.1",
@@ -25,6 +28,7 @@
     "expo-status-bar": "~1.4.4",
     "expo-system-ui": "~2.2.1",
     "expo-web-browser": "~12.1.1",
+    "luxon": "^3.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.3",
@@ -32,11 +36,13 @@
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
-    "react-native-web": "~0.18.10"
+    "react-native-web": "~0.18.10",
+    "victory-native": "^36.6.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/jest": "^29.4.0",
+    "@types/luxon": "^3.2.0",
     "@types/react": "~18.0.14",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
