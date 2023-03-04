@@ -4,7 +4,7 @@ export interface SleepSession {
   intervals: Interval[];
 }
 
-interface Interval {
+export interface Interval {
   id: string;
   ts: StringDate;
   stages: SleepStage[];
@@ -12,7 +12,7 @@ interface Interval {
   timeseries: TimeSeries;
 }
 
-interface SleepStage {
+export interface SleepStage {
   stage: 'awake' | 'light' | 'deep' | 'out';
   duration: number; // in seconds
 }

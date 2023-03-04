@@ -1,16 +1,18 @@
 import { type FC } from 'react';
 
+import { RENDER_WIDTH } from './utils';
+
 import { stageColor } from '#data/stages';
-import { type SleepSessionDatum } from '#types/chart/datum';
+import { type SleepStageDatum } from '#types/chart/datum';
 
 export const Bar: FC<{
   x: number;
   y: number;
   y0: number;
-  datum: SleepSessionDatum;
+  datum: SleepStageDatum;
 }> = ({ x, y, y0, datum }) => {
-  const renderWidth = 1280 - 140;
-  const width = datum.ratio * renderWidth;
+  const width = datum.ratio * RENDER_WIDTH;
+
   return (
     <rect
       x={x}

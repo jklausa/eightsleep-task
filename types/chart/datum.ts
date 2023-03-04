@@ -1,6 +1,10 @@
-import { type StageKey } from '#data/stages';
+import { type SleepStage } from '#types/sleep-session';
 
-export interface SleepSessionDatum {
+export interface SleepStageDatum extends SleepStage {
   ratio: number;
-  stage: StageKey;
+  range: {
+    start: Date;
+    end: Date;
+    summary: string;
+  };
 }

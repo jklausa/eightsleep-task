@@ -1,5 +1,5 @@
 import { Link, Stack } from 'expo-router';
-import { type FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import {
   FlatList,
   Image,
@@ -20,13 +20,38 @@ const hrefForUser = (user: FamilyUser) => ({
   },
 });
 
-export default function IndexScreen() {
+export default function Index() {
   const { isLoading, data, refetch } = useFamilyUsers();
 
   // TODO: show errors
 
   const renderItem = useCallback<ListRenderItem<FamilyUser>>(
-    ({ item: user }) => <SleepListItem user={user} />,
+    ({ item: user }) => {
+      // Adding more data to the seed makes the generated images slightly nicer.
+      const avatarSeed = `${user.displayName}${
+        user.relationship ?? ''
+      }${user.sleepDataURL.toString()}`;
+
+      const fakeAvatarURI = `https://api.dicebear.com/5.x/initials/png?seed=${avatarSeed}&backgroundColor=ffdfbf,ffb300,fb8c00,fdd835,e53935,d81b60,d1d4f9,c0ca33,f4511e,ffd5dc,00897b,00acc1,1e88e5&backgroundType=gradientLinear&backgroundRotation=360,-360&radius=50`;
+
+      return (
+        <Link href={hrefForUser(user)} asChild>
+          <TouchableOpacity>
+            <View style={styles.listItemContainer}>
+              <Image source={{ uri: fakeAvatarURI }} style={styles.image} />
+              <View>
+                <Text style={styles.personName}>{user.displayName}</Text>
+                {user.relationship != null && (
+                  <Text style={styles.personRelationship}>
+                    {user.relationship}
+                  </Text>
+                )}
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Link>
+      );
+    },
     []
   );
 
@@ -51,33 +76,6 @@ export default function IndexScreen() {
     </View>
   );
 }
-
-const SleepListItem: FC<{
-  user: FamilyUser;
-}> = ({ user }) => {
-  // Adding more data to the seed makes the generated images slightly nicer.
-  const avatarSeed = `${user.displayName}${
-    user.relationship ?? ''
-  }${user.sleepDataURL.toString()}`;
-
-  const fakeAvatarURI = `https://api.dicebear.com/5.x/initials/png?seed=${avatarSeed}&backgroundColor=ffdfbf,ffb300,fb8c00,fdd835,e53935,d81b60,d1d4f9,c0ca33,f4511e,ffd5dc,00897b,00acc1,1e88e5&backgroundType=gradientLinear&backgroundRotation=360,-360&radius=50`;
-
-  return (
-    <Link href={hrefForUser(user)} asChild>
-      <TouchableOpacity>
-        <View style={styles.listItemContainer}>
-          <Image source={{ uri: fakeAvatarURI }} style={styles.image} />
-          <View>
-            <Text style={styles.personName}>{user.displayName}</Text>
-            {user.relationship != null && (
-              <Text style={styles.personRelationship}>{user.relationship}</Text>
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
-    </Link>
-  );
-};
 
 const styles = StyleSheet.create({
   list: {

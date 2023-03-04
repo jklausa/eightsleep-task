@@ -11,7 +11,7 @@ export const TimeSeriesChart: FC<{
 }> = ({ name, values, domain }) => {
   return (
     <>
-      <Text>Time series data: {name}</Text>
+      <Text>{name}</Text>
       <VictoryChart theme={VictoryTheme.material}>
         <VictoryScatter
           name={name}

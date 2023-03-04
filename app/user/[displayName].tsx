@@ -1,12 +1,19 @@
 import { AntDesign } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { type FC } from 'react';
-import { ActivityIndicator, StyleSheet, useColorScheme } from 'react-native';
+import { type FC, useCallback, useMemo } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  type ListRenderItem,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
 
-import { SleepSessionChart } from '#components/chart/SleepSessionChart';
+import { IntervalSummary } from '#components/interval/IntervalSummary';
 import { Text, View, useThemeColor } from '#components/Themed';
 import Colors from '#constants/Colors';
 import { useSleepSessionForUser } from '#hooks/data/useSleepSessionForUser';
+import { type Interval } from '#types/sleep-session';
 
 interface UserShowParamList extends Record<string, string> {
   displayName: string;
@@ -38,6 +45,22 @@ const UserShowScreen: FC<{
   const { isLoading, user, sleepSession, error, refetch } =
     useSleepSessionForUser(displayName);
 
+  // sort intervals by date
+  const intervals = useMemo(
+    () =>
+      sleepSession?.intervals.sort(
+        (lhs, rhs) => new Date(lhs.ts).getTime() - new Date(rhs.ts).getTime()
+      ),
+    [sleepSession?.intervals]
+  );
+
+  const renderItem = useCallback<ListRenderItem<Interval>>(
+    ({ item: interval }) => {
+      return <IntervalSummary interval={interval} />;
+    },
+    []
+  );
+
   return (
     <>
       <Stack.Screen
@@ -59,7 +82,7 @@ const UserShowScreen: FC<{
                 userString: {user.displayName}, sleep sessions:{' '}
                 {sleepSession.intervals.length}
               </Text>
-              <SleepSessionChart sleepSession={sleepSession} />
+              <FlatList data={intervals} renderItem={renderItem} />
             </>
           )}
         </View>
