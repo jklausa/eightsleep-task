@@ -16,6 +16,8 @@
   "dependencies": {
     "@expo-google-fonts/overpass": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",
+    "@formatjs/intl-listformat": "^7.1.9",
+    "@formatjs/intl-locale": "^3.1.1",
     "@react-navigation/native": "^6.0.2",
     "d3-array": "^3.2.2",
     "d3-scale": "^4.0.2",
