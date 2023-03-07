@@ -1,4 +1,5 @@
 import { type FC } from 'react';
+import { Rect } from 'react-native-svg';
 
 import { RENDER_WIDTH } from './utils';
 
@@ -14,7 +15,7 @@ export const Bar: FC<{
   const width = datum.ratio * RENDER_WIDTH;
 
   return (
-    <rect
+    <Rect
       x={x}
       y={y}
       width={width}
