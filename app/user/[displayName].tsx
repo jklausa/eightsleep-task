@@ -3,6 +3,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { type FC } from 'react';
 import { ActivityIndicator, StyleSheet, useColorScheme } from 'react-native';
 
+import { SleepSessionChart } from '#components/chart/SleepSessionChart';
 import { Text, View, useThemeColor } from '#components/Themed';
 import Colors from '#constants/Colors';
 import { useSleepSessionForUser } from '#hooks/data/useSleepSessionForUser';
@@ -53,10 +54,13 @@ const UserShowScreen: FC<{
         <View style={styles.container}>
           {error != null && <NetworkLoadingError onTapReload={refetch} />}
           {error == null && (
-            <Text>
-              userString: {user.displayName}, sleep sessions:{' '}
-              {sleepSession.intervals.length}
-            </Text>
+            <>
+              <Text>
+                userString: {user.displayName}, sleep sessions:{' '}
+                {sleepSession.intervals.length}
+              </Text>
+              <SleepSessionChart sleepSession={sleepSession} />
+            </>
           )}
         </View>
       )}

@@ -1,10 +1,12 @@
+type StringDate = string; // ISO 8601
+
 export interface SleepSession {
   intervals: Interval[];
 }
 
 interface Interval {
   id: string;
-  ts: Date;
+  ts: StringDate;
   stages: SleepStage[];
   score: number; // 0 - 100
   timeseries: TimeSeries;
@@ -23,4 +25,4 @@ interface TimeSeries {
   heartRate: TimeSeriesValue[]; // BPM
 }
 
-type TimeSeriesValue = [Date, number];
+type TimeSeriesValue = [StringDate, number];
