@@ -1,6 +1,6 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { type FC, useMemo } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 
 import { NetworkLoadingError } from '#components/error/NetworkLoadingError';
 import { IntervalSummary } from '#components/interval/IntervalSummary';
@@ -70,7 +70,7 @@ const IntervalShowScreen: FC<{
         </View>
       )}
       {!isLoading && user != null && interval != null && (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           {error != null && <NetworkLoadingError onTapReload={refetch} />}
           {error == null && (
             <>
@@ -79,7 +79,7 @@ const IntervalShowScreen: FC<{
               <IntervalTimeSeriesCharts interval={interval} />
             </>
           )}
-        </View>
+        </ScrollView>
       )}
     </>
   );
