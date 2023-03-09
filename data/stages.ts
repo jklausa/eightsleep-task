@@ -31,3 +31,7 @@ export const stageColor = (stage: StageKey): Stage['color'] => {
 export const stageValue = (stage: StageKey): Stage['value'] => {
   return Stages[stage].value;
 };
+
+export const stageLabel = (stage: StageKey): Stage['label'] => {
+  return Stages[stage].label;
+};

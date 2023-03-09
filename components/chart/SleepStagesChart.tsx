@@ -1,15 +1,14 @@
 import { type FC } from 'react';
+import { Dimensions } from 'react-native';
 import {
   VictoryAxis,
-  VictoryBar,
   VictoryChart,
+  VictoryLegend,
+  VictoryPie,
   VictoryTheme,
 } from 'victory-native';
 
-import { Bar } from './decorators/Bar';
-import { BarLabel } from './decorators/BarLabel';
-
-import { Stages, stageColor, stageValue } from '#data/stages';
+import { type StageKey, Stages, stageColor, stageLabel } from '#data/stages';
 import { type SleepStageDatum } from '#types/chart/datum';
 
 export const SleepStagesChart: FC<{
@@ -17,28 +16,53 @@ export const SleepStagesChart: FC<{
   end: Date;
   stages: SleepStageDatum[];
 }> = ({ start, end, stages }) => {
-  // @ts-expect-error: Placeholder, gets correct params at runtime
-  const dataComponent = <Bar />;
-
-  // @ts-expect-error: Placeholder, gets correct params at runtime
-  const labelComponent = <BarLabel />;
+  const width = Dimensions.get('window').width - 24 * 2;
 
   return (
-    <VictoryChart
-      theme={VictoryTheme.material}
-      domainPadding={{ x: 20 }}
-      domain={{ x: [start, end] }}
-      defaultAxes={{
-        dependent: <VictoryAxis />,
-        independent: (
-          <VictoryAxis
-            dependentAxis
-            tickFormat={Object.values(Stages).map((stage) => stage.label)}
-          />
-        ),
-      }}
-    >
-      <VictoryBar
+    <VictoryChart theme={VictoryTheme.material} width={width} height={350}>
+      <VictoryAxis
+        axisComponent={<></>}
+        gridComponent={<></>}
+        tickComponent={<></>}
+        tickLabelComponent={<></>}
+        // Normally the way to disable the axes is to use <VictoryGroup> instead of <VictoryChart>, but that breaks displaying the legend.
+      />
+      <VictoryPie
+        style={{
+          data: {
+            fill: ({ datum }) => {
+              return stageColor(datum.x);
+            },
+          },
+          labels: {
+            fill: '#ffff00',
+            // fontFamily: 'Overpass_400Regular',
+          },
+        }}
+        padAngle={0.8}
+        innerRadius={50}
+        labelPosition="centroid"
+        labels={stages.map((stage) => stage.range.summary)}
+        data={stages.map((stage) => ({
+          ...stage,
+          x: stage.stage,
+          y: stage.ratio,
+        }))}
+      />
+      <VictoryLegend
+        orientation="horizontal"
+        style={{ border: { stroke: 'black' } }}
+        data={Object.keys(Stages).map((stage) => ({
+          name: stageLabel(stage as StageKey),
+          symbol: {
+            fill: stageColor(stage as StageKey),
+          },
+        }))}
+        x={60}
+        y={325}
+      />
+
+      {/* <VictoryBar
         data={stages.map((stage) => ({
           ...stage,
           x: stage.range.start,
@@ -50,7 +74,7 @@ export const SleepStagesChart: FC<{
         style={{
           data: { fill: ({ datum }) => stageColor(datum.stage) },
         }}
-      />
+      /> */}
     </VictoryChart>
   );
 };

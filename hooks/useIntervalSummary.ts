@@ -35,13 +35,18 @@ export const useIntervalSummary = (interval: Interval) => {
 
     const { hours, minutes } = end.diff(previousEnd, ['hours', 'minutes']);
 
+    const summaryString =
+      hours > 0
+        ? `${hours.toString(10)}h${minutes.toString(10)}m`
+        : `${minutes.toString(10)}m`;
+
     return {
       ...stage,
       ratio,
       range: {
         start: previousEnd.toJSDate(),
         end: end.toJSDate(),
-        summary: `${hours.toString(10)}h${minutes.toString(10)}m`,
+        summary: summaryString,
       },
     };
   });
