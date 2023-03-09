@@ -8,6 +8,7 @@ import {
   VictoryTheme,
 } from 'victory-native';
 
+import { useThemeColor } from '#components/Themed';
 import { type StageKey, Stages, stageColor, stageLabel } from '#data/stages';
 import { type SleepStageDatum } from '#types/chart/datum';
 
@@ -17,6 +18,8 @@ export const SleepStagesChart: FC<{
   stages: SleepStageDatum[];
 }> = ({ start, end, stages }) => {
   const width = Dimensions.get('window').width - 24 * 2;
+
+  const textColor = useThemeColor({}, 'text');
 
   return (
     <VictoryChart theme={VictoryTheme.material} width={width} height={350}>
@@ -33,13 +36,15 @@ export const SleepStagesChart: FC<{
             fill: ({ datum }) => {
               return stageColor(datum.x);
             },
+            strokeWidth: 1,
+            strokeOpacity: 0.5,
+            stroke: textColor,
           },
           labels: {
-            fill: '#ffff00',
-            // fontFamily: 'Overpass_400Regular',
+            fill: textColor,
           },
         }}
-        padAngle={0.8}
+        padAngle={4}
         innerRadius={50}
         labelPosition="centroid"
         labels={stages.map((stage) => stage.range.summary)}
@@ -51,7 +56,12 @@ export const SleepStagesChart: FC<{
       />
       <VictoryLegend
         orientation="horizontal"
-        style={{ border: { stroke: 'black' } }}
+        style={{
+          border: { stroke: 'black' },
+          labels: {
+            fill: textColor,
+          },
+        }}
         data={Object.keys(Stages).map((stage) => ({
           name: stageLabel(stage as StageKey),
           symbol: {

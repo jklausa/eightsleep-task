@@ -1,22 +1,22 @@
 export const Stages = {
   awake: {
     label: 'Awake',
-    color: '#aaffaa',
+    color: 'rgb(79, 161, 67)',
     value: 1,
   },
   light: {
     label: 'Light',
-    color: '#aaaaff',
+    color: 'rgb(69,129, 162)',
     value: 2,
   },
   deep: {
     label: 'Deep',
-    color: '#ffaaaa',
+    color: 'rgb(82, 62, 170)',
     value: 3,
   },
   out: {
     label: 'Out',
-    color: '#ffaaff',
+    color: 'rgb(222, 48, 84)',
     value: 4,
   },
 } as const;
