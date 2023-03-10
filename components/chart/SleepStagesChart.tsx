@@ -57,7 +57,6 @@ export const SleepStagesChart: FC<{
       <VictoryLegend
         orientation="horizontal"
         style={{
-          border: { stroke: 'black' },
           labels: {
             fill: textColor,
           },
