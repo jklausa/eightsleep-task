@@ -1,6 +1,11 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { type FC, useMemo } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 
 import { NetworkLoadingError } from '#components/error/NetworkLoadingError';
 import { IntervalSummary } from '#components/interval/IntervalSummary';
@@ -70,16 +75,18 @@ const IntervalShowScreen: FC<{
         </View>
       )}
       {!isLoading && user != null && interval != null && (
-        <ScrollView style={styles.container}>
-          {error != null && <NetworkLoadingError onTapReload={refetch} />}
-          {error == null && (
-            <>
-              <Text>Sleep data for {user.displayName}.</Text>
-              <IntervalSummary interval={interval} />
-              <IntervalTimeSeriesCharts interval={interval} />
-            </>
-          )}
-        </ScrollView>
+        <SafeAreaView style={styles.container}>
+          <ScrollView style={styles.scrollView}>
+            {error != null && <NetworkLoadingError onTapReload={refetch} />}
+            {error == null && (
+              <>
+                <Text>Sleep data for {user.displayName}.</Text>
+                <IntervalSummary interval={interval} />
+                <IntervalTimeSeriesCharts interval={interval} />
+              </>
+            )}
+          </ScrollView>
+        </SafeAreaView>
       )}
     </>
   );
@@ -88,6 +95,8 @@ const IntervalShowScreen: FC<{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollView: {
     padding: 24,
     gap: 12,
   },
