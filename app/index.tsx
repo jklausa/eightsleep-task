@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { Text, View } from '#components/Themed';
+import Colors from '#constants/Colors';
 import { useFamilyUsers } from '#hooks/data/useFamilyUsers';
 import { type FamilyUser } from '#types/family-user';
 
@@ -89,8 +90,8 @@ const styles = StyleSheet.create({
   },
   listItemContainer: {
     borderWidth: 1,
-    borderColor: 'red',
     borderRadius: 10,
+    borderColor: Colors.light.tint,
 
     minHeight: 44,
     padding: 6,

@@ -2,7 +2,6 @@ import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { type FC, useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
-  Button,
   FlatList,
   type ListRenderItem,
   StyleSheet,
@@ -13,6 +12,7 @@ import { IntervalSummary } from '#components/interval/IntervalSummary';
 import { ItemSeparator } from '#components/list/ItemSeparator';
 import { ErrorScreen } from '#components/screens/ErrorScreen';
 import { Text, View } from '#components/Themed';
+import Colors from '#constants/Colors';
 import { useSleepSessionForUser } from '#hooks/data/useSleepSessionForUser';
 import { type FamilyUser } from '#types/family-user';
 import { type Interval } from '#types/sleep-session';
@@ -73,13 +73,11 @@ const UserShowScreen: FC<{
       }
 
       return (
-        <>
-          <IntervalSummary interval={interval} />
-
-          <Link href={hrefForInterval(user, interval)} asChild>
-            <Button title="More details..." />
-          </Link>
-        </>
+        <Link href={hrefForInterval(user, interval)}>
+          <View style={styles.cell}>
+            <IntervalSummary interval={interval} />
+          </View>
+        </Link>
       );
     },
     [user]
@@ -102,14 +100,12 @@ const UserShowScreen: FC<{
           {error != null && <NetworkLoadingError onTapReload={refetch} />}
           {error == null && (
             <>
-              <Text>
-                Sleep data for {user.displayName}. Total sleep intervals:{' '}
-                {intervals.length}
-              </Text>
+              <Text style={styles.listHeader}>Recorded sleep sessions:</Text>
               <FlatList
                 data={intervals}
                 renderItem={renderItem}
                 ItemSeparatorComponent={ItemSeparator}
+                style={styles.listStyle}
               />
             </>
           )}
@@ -122,12 +118,26 @@ const UserShowScreen: FC<{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    gap: 12,
+    padding: 6,
   },
   spinnerContainer: {
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  listStyle: {
+    padding: 6,
+    margin: 6,
+  },
+  listHeader: {
+    margin: 6,
+    padding: 6,
+    fontSize: 20,
+  },
+  cell: {
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.light.tint,
+    alignItems: 'center',
   },
 });

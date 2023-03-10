@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#f3f3f3',
   },
 });

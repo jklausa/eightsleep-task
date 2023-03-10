@@ -1,17 +1,17 @@
-const tintColorLight = 'rgba(36, 106, 255, 1)';
-const tintColorDark = 'rgba(36, 106, 255, 1)';
+const tintColorLight = 'rgba(131, 46, 245, 1)';
+const tintColorDark = 'rgba(131, 46, 245, 1)';
 
 export default {
   light: {
-    text: '#000',
-    background: '#fff',
+    text: '#222',
+    background: '#fafafa',
     tint: tintColorLight,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#fff',
-    background: '#000',
+    text: '#fafafa',
+    background: '#222',
     tint: tintColorDark,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
