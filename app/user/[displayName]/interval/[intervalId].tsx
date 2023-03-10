@@ -11,7 +11,7 @@ import { NetworkLoadingError } from '#components/error/NetworkLoadingError';
 import { IntervalSummary } from '#components/interval/IntervalSummary';
 import { IntervalTimeSeriesCharts } from '#components/interval/IntervalTimeSeriesCharts';
 import { ErrorScreen } from '#components/screens/ErrorScreen';
-import { Text, View } from '#components/Themed';
+import { View } from '#components/Themed';
 import { useSleepSessionForUser } from '#hooks/data/useSleepSessionForUser';
 
 interface IntervalShowParamList extends Record<string, string> {
