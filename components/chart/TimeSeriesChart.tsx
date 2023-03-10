@@ -28,7 +28,7 @@ export const TimeSeriesChart: FC<{
           dependentAxis
           gridComponent={<></>}
           domain={domain}
-          scale={{ x: 'time' }}
+          scale={'time'}
           style={{
             axis: { stroke: foregroundColor },
             axisLabel: { stroke: foregroundColor },
@@ -39,7 +39,7 @@ export const TimeSeriesChart: FC<{
         <VictoryAxis
           gridComponent={<></>}
           domain={domain}
-          scale={{ x: 'time' }}
+          scale={'time'}
           fixLabelOverlap
           style={{
             axis: { stroke: foregroundColor },

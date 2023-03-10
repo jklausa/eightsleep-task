@@ -50,7 +50,6 @@ export const IntervalTimeSeriesCharts: FC<{
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'transparent',
     paddingVertical: 6,
   },
   chartStyle: {
