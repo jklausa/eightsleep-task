@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   FlatList,
   type ListRenderItem,
+  SafeAreaView,
   StyleSheet,
 } from 'react-native';
 
@@ -97,18 +98,22 @@ const UserShowScreen: FC<{
       )}
       {!isLoading && user != null && intervals != null && (
         <View style={styles.container}>
-          {error != null && <NetworkLoadingError onTapReload={refetch} />}
-          {error == null && (
-            <>
-              <Text style={styles.listHeader}>Recorded sleep sessions:</Text>
+          <SafeAreaView style={{ flex: 1 }}>
+            {error != null && <NetworkLoadingError onTapReload={refetch} />}
+            {error == null && (
               <FlatList
                 data={intervals}
                 renderItem={renderItem}
                 ItemSeparatorComponent={ItemSeparator}
                 style={styles.listStyle}
+                ListHeaderComponent={
+                  <Text style={styles.listHeader}>
+                    Recorded sleep sessions:
+                  </Text>
+                }
               />
-            </>
-          )}
+            )}
+          </SafeAreaView>
         </View>
       )}
     </>
@@ -130,14 +135,12 @@ const styles = StyleSheet.create({
     margin: 6,
   },
   listHeader: {
-    margin: 6,
-    padding: 6,
     fontSize: 20,
+    marginBottom: 6,
   },
   cell: {
     borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.light.tint,
-    alignItems: 'center',
   },
 });

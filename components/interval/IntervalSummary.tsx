@@ -24,7 +24,7 @@ export const IntervalSummary: FC<{
       <Text style={styles.value}>{interval.score}</Text>
 
       {stageSummaries.map((summary) => (
-        <>
+        <View key={`${summary.key}-container}`}>
           <Text key={`${summary.key}-header`} style={styles.header}>
             {summary.title}
           </Text>
@@ -33,7 +33,7 @@ export const IntervalSummary: FC<{
             {Math.round((duration.stages[summary.key] / duration.total) * 100)}
             %)
           </Text>
-        </>
+        </View>
       ))}
 
       <SleepStagesChart start={range.start} end={range.end} stages={stages} />
@@ -44,15 +44,13 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
     fontFamily: 'Overpass_700Bold',
-    marginVertical: 10,
+    marginVertical: 4,
   },
   value: {
     fontSize: 14,
     fontFamily: 'Overpass_300Light',
   },
   chartStyle: {
-    borderRadius: 10,
-    marginBottom: 10,
-    borderWidth: StyleSheet.hairlineWidth,
+    margin: 6,
   },
 });

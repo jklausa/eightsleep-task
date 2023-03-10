@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { TimeSeriesChart } from '#components/chart/TimeSeriesChart';
 import { View } from '#components/Themed';
+import Colors from '#constants/Colors';
 import { useIntervalSummary } from '#hooks/useIntervalSummary';
 import { type Interval } from '#types/sleep-session';
 
@@ -49,13 +50,13 @@ export const IntervalTimeSeriesCharts: FC<{
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'transparent',
-    paddingVertical: 10,
+    // backgroundColor: 'transparent',
+    paddingVertical: 6,
   },
   chartStyle: {
     borderRadius: 10,
-    marginBottom: 10,
+    margin: 6,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#f3f3f3',
+    borderColor: Colors.light.tint,
   },
 });

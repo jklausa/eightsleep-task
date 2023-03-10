@@ -76,16 +76,17 @@ const IntervalShowScreen: FC<{
       )}
       {!isLoading && user != null && interval != null && (
         <SafeAreaView style={styles.container}>
-          <ScrollView style={styles.scrollView}>
-            {error != null && <NetworkLoadingError onTapReload={refetch} />}
-            {error == null && (
-              <>
-                <Text>Sleep data for {user.displayName}.</Text>
-                <IntervalSummary interval={interval} />
-                <IntervalTimeSeriesCharts interval={interval} />
-              </>
-            )}
-          </ScrollView>
+          <View>
+            <ScrollView style={styles.scrollView}>
+              {error != null && <NetworkLoadingError onTapReload={refetch} />}
+              {error == null && (
+                <>
+                  <IntervalSummary interval={interval} />
+                  <IntervalTimeSeriesCharts interval={interval} />
+                </>
+              )}
+            </ScrollView>
+          </View>
         </SafeAreaView>
       )}
     </>
@@ -97,8 +98,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView: {
-    padding: 24,
     gap: 12,
+    padding: 12,
   },
   spinnerContainer: {
     flex: 1,
